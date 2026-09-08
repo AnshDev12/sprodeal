@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spro Deal - Sign In</title>
+    <meta name="description" content="Best deals and offers website">
+    <link rel="icon" type="image/png" href="/icon.png">
+    <link rel="shortcut icon" href="/icon.png">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="top-section">
+        <img src="topbg.png" alt="Spro Deal Logo">
+    </div>
+
+    <div class="form-container">
+        <div class="title">SIGN <hr class="horizontal-line"/><span>IN TO SPRO</span> DEAL</div>
+        <form action="index.php" method="post">
+            <label for="phoneInput">Phone</label>
+            <div class="input-box">
+                <span class="country">+91 |</span>
+                <input id="phoneInput" type="tel" name="phone_no" placeholder="Please enter phone number" maxlength="10" inputmode="numeric" pattern="[0-9]*" required>
+            </div>
+            <label for="passwordInput">Password</label>
+            <div class="input-box">
+                <input id="passwordInput" type="password" name="password" placeholder="Please enter password" required>
+            </div>
+            <button id="loginBtn" class="signin-btn" type="submit" name="submit" disabled>SIGN IN</button>
+        </form>
+
+        <p class="policy">
+            <label class="custom-check">
+                <input id="privacyAgreement" type="checkbox" checked>
+                <span class="checkmark"></span>
+            </label>
+            <span>By logging in you agree to our</span>
+            <span id="privacyPolicy" class="privacy">Privacy Policy</span>
+        </p>
+        <p class="create-account">
+            <a id="createAccountLink" href="https://invite.ukpayhub.com/memberRegister?inviteCodeType=1&inviteCode=nzeg6z46">Create new account?</a>
+        </p>
+        <a class="telegram-float" href="https://t.me/realmillionaire0025" target="_blank" rel="noopener noreferrer" aria-label="Open Spro Deal on Telegram">
+            <i class="fa-brands fa-telegram"></i>
+        </a>
+    </div>
+    <script>
+        const phoneInput = document.getElementById('phoneInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const loginBtn = document.getElementById('loginBtn');
+
+        function checkInputs() {
+            const isPhoneValid = /^\d{10}$/.test(phoneInput.value.trim());
+            const isPasswordValid = passwordInput.value.trim().length >= 6;
+            loginBtn.disabled = !(isPhoneValid && isPasswordValid);
+        }
+
+        phoneInput.addEventListener('input', checkInputs);
+        passwordInput.addEventListener('input', checkInputs);
+    </script>
+</body>
+</html>
