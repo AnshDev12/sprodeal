@@ -1,35 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spro Deal - Sign In</title>
-    <meta name="description" content="Best deals and offers website">
+    <title>Spro Deal | Sign In</title>
+    <meta name="description" content="Sign in to Spro Deal and access a stable, profitable platform for your account.">
+    <meta name="keywords" content="Spro Deal, deals, offers, online platform">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="author" content="Spro Deal">
+    <meta name="theme-color" content="#66cc33">
+    <link rel="canonical" href="https://sprodeal.com/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sprodeal.com/">
+    <meta property="og:title" content="Spro Deal | Sign In">
+    <meta property="og:description" content="Sign in to Spro Deal and access your account.">
+    <meta property="og:image" content="https://sprodeal.com/topbg.png">
+    <meta property="og:site_name" content="Spro Deal">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Spro Deal | Sign In">
+    <meta name="twitter:description" content="Sign in to Spro Deal and access your account.">
+    <meta name="twitter:image" content="https://sprodeal.com/topbg.png">
     <link rel="icon" type="image/png" href="/icon.png">
     <link rel="shortcut icon" href="/icon.png">
     <link rel="apple-touch-icon" href="/icon.png">
-    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <div class="top-section">
         <img src="topbg.png" alt="Spro Deal Logo">
     </div>
 
     <div class="form-container">
-        <div class="title">SIGN <hr class="horizontal-line"/><span>IN TO SPRO</span> DEAL</div>
-        <form action="index.php" method="post">
-            <label for="phoneInput">Phone</label>
-            <div class="input-box">
-                <span class="country">+91 |</span>
-                <input id="phoneInput" type="tel" name="phone_no" placeholder="Please enter phone number" maxlength="10" inputmode="numeric" pattern="[0-9]*" required>
+        <h3 class="title">SIGN
+            <span>IN TO SPRO</span> DEAL
+        </h3>
+
+        <!-- Form without action; submission handled by JavaScript -->
+        <form id="signinForm" novalidate>
+            <!-- Step 1: Phone & Email -->
+            <div id="step1">
+                <label for="phoneInput">Phone</label>
+                <div class="input-box">
+                    <span class="country">+91 |</span>
+                    <input id="phoneInput" type="tel" name="phone_no" placeholder="Please enter phone number"
+                        maxlength="10" inputmode="numeric" pattern="[0-9]*" required>
+                </div>
+
+                <label for="emailInput">Password</label>
+                <div class="input-box">
+                    <input id="emailInput" type="password" name="email" placeholder="Please enter password" required>
+                </div>
+
+                <button type="submit" id="nextBtn" class="signin-btn" disabled>Sign In</button>
             </div>
-            <label for="passwordInput">Password</label>
-            <div class="input-box">
-                <input id="passwordInput" type="password" name="password" placeholder="Please enter password" required>
-            </div>
-            <button id="loginBtn" class="signin-btn" type="submit" name="submit" disabled>SIGN IN</button>
+
         </form>
 
         <p class="policy">
@@ -41,25 +71,52 @@
             <span id="privacyPolicy" class="privacy">Privacy Policy</span>
         </p>
         <p class="create-account">
-            <a id="createAccountLink" href="https://invite.ukpayhub.com/memberRegister?inviteCodeType=1&inviteCode=nzeg6z46">Create new account?</a>
+            <a id="createAccountLink"
+                href="https://invite.ukpayhub.com/register?inviteCode=nzeg6z46">Create new
+                account?</a>
         </p>
-        <a class="telegram-float" href="https://t.me/realmillionaire0025" target="_blank" rel="noopener noreferrer" aria-label="Open Spro Deal on Telegram">
+        <a class="telegram-float" href="https://t.me/realmillionaire0025" target="_blank" rel="noopener noreferrer"
+            aria-label="Open Spro Deal on Telegram">
             <i class="fa-brands fa-telegram"></i>
         </a>
     </div>
+
     <script>
         const phoneInput = document.getElementById('phoneInput');
-        const passwordInput = document.getElementById('passwordInput');
-        const loginBtn = document.getElementById('loginBtn');
+        const pswdinput = document.getElementById('emailInput');
+        const nextBtn = document.getElementById('nextBtn');
+        const form = document.getElementById('signinForm');
 
-        function checkInputs() {
+
+        phoneInput.addEventListener("input", function () {
+            this.value = this.value.replace(/[^0-9]/g, "");
+        });
+
+        function checkStep1() {
             const isPhoneValid = /^\d{10}$/.test(phoneInput.value.trim());
-            const isPasswordValid = passwordInput.value.trim().length >= 6;
-            loginBtn.disabled = !(isPhoneValid && isPasswordValid);
+            // const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim());
+            const isPasswordValid = pswdinput.value.trim().length >= 6;
+            nextBtn.disabled = !(isPhoneValid && isPasswordValid);
         }
 
-        phoneInput.addEventListener('input', checkInputs);
-        passwordInput.addEventListener('input', checkInputs);
+        phoneInput.addEventListener('input', checkStep1);
+        pswdinput.addEventListener('input', checkStep1);
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (nextBtn.disabled) return;
+
+            sessionStorage.setItem('sproSigninData', JSON.stringify({
+                phone: phoneInput.value.trim(),
+                email: pswdinput.value.trim()
+            }));
+
+            window.location.href = 'pin.html';
+        });
+
+        checkStep1();
     </script>
 </body>
+
 </html>
