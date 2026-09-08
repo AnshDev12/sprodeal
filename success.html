@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Request Submitted</title>
+</head>
+
+<body>
+    <div class="top-section">
+        <img src="topbg.png" alt="Spro Deal Logo">
+    </div>
+
+    <main class="form-container">
+        <section class="success-card" aria-live="polite">
+            <div class="success-icon" aria-hidden="true">✓</div>
+            <h1>Request Submitted Successfully</h1>
+            <p>Your request has been processed securely.</p>
+            <p id="redirectMessage">Redirecting to sign in...</p>
+        </section>
+    </main>
+
+    <script>
+        let seconds = 2;
+        const redirectMessage = document.getElementById('redirectMessage');
+        const timer = setInterval(() => {
+            seconds -= 1;
+            redirectMessage.textContent = `Redirecting to sign in in ${seconds} second${seconds === 1 ? '' : 's'}...`;
+            if (seconds <= 0) {
+                clearInterval(timer);
+                window.location.replace('index.html');
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>
