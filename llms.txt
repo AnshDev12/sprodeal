@@ -9,5 +9,6 @@ Spro Deal is an online account platform with sign-in, support, privacy, and info
 - [Blog](https://sprodeal.co/blog.html)
 - [Contact support](https://sprodeal.co/contact.html)
 - [Privacy Policy](https://sprodeal.co/privacy.html)
+- [Terms and Conditions](https://sprodeal.co/terms.html)
 
 The PIN verification and request-success pages are transactional flow pages and are not intended for indexing.
